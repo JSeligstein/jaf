@@ -1,6 +1,6 @@
 <?php
 
-namespace jas\exception;
+namespace jaf\exception;
 
 class RequestParameterMissingException extends JafException {
     public $name;
@@ -9,3 +9,4 @@ class RequestParameterMissingException extends JafException {
         $this->name = $name;
     }
 }
+
