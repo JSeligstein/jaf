@@ -40,6 +40,7 @@ abstract class WebSite {
         }
 
         $this->view = $this->controller->getView();
+        $this->view->setSite($this);
         $this->view->setController($this->controller);
         $this->view->headers();
         return $this->view->render();

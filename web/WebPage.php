@@ -15,7 +15,7 @@ abstract class WebPage extends WebView {
     }
 
     public function addStylesheet($path) {
-        $fullPath = \jaf\config\SiteConfig::inst()->staticBaseUri().$path;
+        $fullPath = $this->getSite()->getConfig()->staticBaseUri().$path;
         $this->stylesheets[$fullPath] = 1;
         return $this;
     }
@@ -26,7 +26,7 @@ abstract class WebPage extends WebView {
     }
 
     public function addScript($path) {
-        $fullPath = \jaf\config\SiteConfig::inst()->staticBaseUri().$path;
+        $fullPath = $this->getSite()->getConfig()->staticBaseUri().$path;
         $this->scripts[$fullPath] = 1;
         return $this;
     }
@@ -48,6 +48,12 @@ abstract class WebPage extends WebView {
             );
         }
 
+        foreach ($this->scripts as $script => $_) {
+            $head->appendChild(
+                <script type="text/javascript" src={$script} />
+            );
+        }
+
         return $head;
     }
 
@@ -55,11 +61,13 @@ abstract class WebPage extends WebView {
     }
 
     public function render() {
+        $content = $this->getContent();
+
         return
             <x:doctype>
                 <html>
                     {$this->getHead()}
-                    <body>{$this->getContent()}</body>
+                    <body>{$content}</body>
                 </html>
             </x:doctype>;
     }
