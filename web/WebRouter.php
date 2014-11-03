@@ -22,14 +22,14 @@ abstract class WebRouter {
 
             // if map is a string, we have too long of a path
             if (gettype($map) == 'string') {
-                \jaf\log\Logger::warn('Invalid path: '.$path);
+                \jaf\log\Logger::warn('Invalid path (too long): '.$path);
                 return $this->get404Controller($request);
             }
 
-            // require exact paths for now
-            // TODO: regex, wildcards
+            // require exact paths for now (or wildcards)
+            // TODO: regex, wildcard
             if (!isset($map[$piece])) {
-                \jaf\log\Logger::warn('Invalid path: '.$path);
+                \jaf\log\Logger::warn('Invalid path (missing): '.$path);
                 return $this->get404Controller($request);
             }
 
@@ -40,7 +40,7 @@ abstract class WebRouter {
         // which is the default for that direcetory
         if (gettype($map) == 'array') {
             if (!isset($map[''])) {
-                \jaf\log\Logger::warn('Invalid path: '.$path);
+                \jaf\log\Logger::warn('Invalid path (incomplete): '.$path);
                 return $this->get404Controller($request);
             }
             $map = $map[''];
@@ -48,7 +48,7 @@ abstract class WebRouter {
 
         // must be a controller now
         if (gettype($map) != 'string') {
-            \jaf\log\Logger::warn('Invalid path: '.$path);
+            \jaf\log\Logger::warn('Invalid path (not a controller): '.$path);
             return $this->get404Controller($request);
         }
 
