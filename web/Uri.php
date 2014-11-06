@@ -9,7 +9,6 @@ class Uri {
         exit;
     }
 
-    private $uriStr = '';
     private $path = '';
     private $protocol = '';
     private $domain = '';
@@ -17,15 +16,11 @@ class Uri {
     private $fullDomain = '';
     private $queryParams = array();
 
-    public function __construct($uriStr) {
-        $this->uriStr = $uriStr;
-        $this->parse();
+    public function __construct($uri) {
+        $this->parse($uri);
     }
 
-    private function parse() {
-
-        $uri = $this->uriStr;
-        
+    private function parse($uri) {
         // check for a protocol
         $protocolLoc = strpos($uri, '://');
         if ($protocolLoc !== false) {
@@ -131,6 +126,18 @@ class Uri {
             }
          }
          return implode('&', $paramStrs);
+    }
+
+    public function getParam($k) {
+        return $this->queryParams[$k];
+    }
+
+    public function getPathPiece($offset) {
+        $pieces = explode('/', $this->path);
+        if ($offset < 0) {
+            return $pieces[count($pieces)+$offset];
+        }
+        return $pieces[$offset];
     }
 
     /**********
