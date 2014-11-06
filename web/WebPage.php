@@ -61,13 +61,14 @@ abstract class WebPage extends WebView {
     }
 
     public function render() {
-        $content = $this->getContent();
+        $content = $this->getContent()->__toString();
+        $head = $this->getHead();
 
         return
             <x:doctype>
                 <html>
-                    {$this->getHead()}
-                    <body>{$content}</body>
+                    {$head}
+                    <body>{RawHTML($content)}</body>
                 </html>
             </x:doctype>;
     }

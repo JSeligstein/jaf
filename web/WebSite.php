@@ -13,16 +13,41 @@ abstract class WebSite {
     protected $view;
 
     private $processed = false;
+    private static $_inst = null;
 
     abstract public function getConfig();
     abstract public function getRouter();
 
+    public static function instance() {
+        if (self::$_inst == null) {
+            throw new SiteException('Website::instance was called before any instantiation');
+        }
+        return self::$_inst;
+    }
+
     public function __construct() {
+        if (self::$_inst != null) {
+            throw new SiteException('Website class is a singleton but was instantiated twice!');
+        }
+
+        self::$_inst = $this;
+
         $this->config = $this->getConfig();
         $this->router = $this->getRouter();
         $this->request = WebRequest::newDefault();
         $this->controller = $this->router->getController($this->request);
         $this->processed = false;
+    }
+
+    public function getController() {
+        return $this->controller;
+    }
+
+    public function getView() {
+        if (empty($this->view)) {
+            throw new SiteException('GetView was called before render');
+        }
+        return $this->view;
     }
 
     public function process() {
