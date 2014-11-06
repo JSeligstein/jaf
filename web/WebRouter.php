@@ -27,13 +27,16 @@ abstract class WebRouter {
             }
 
             // require exact paths for now (or wildcards)
-            // TODO: regex, wildcard
+            // TODO: regex
             if (!isset($map[$piece])) {
-                \jaf\log\Logger::warn('Invalid path (missing): '.$path);
-                return $this->get404Controller($request);
+                if (!isset($map['*'])) {
+                    \jaf\log\Logger::warn('Invalid path (missing): '.$path);
+                    return $this->get404Controller($request);
+                }
+                $map = $map['*'];
+            } else {
+                $map = $map[$piece];
             }
-
-            $map = $map[$piece];
         }
 
         // if map is still an array, check if there's an empty string,
@@ -49,6 +52,11 @@ abstract class WebRouter {
         // must be a controller now
         if (gettype($map) != 'string') {
             \jaf\log\Logger::warn('Invalid path (not a controller): '.$path);
+            return $this->get404Controller($request);
+        }
+
+        if (!class_exists($map)) {
+            \jaf\log\Logger::warn('Invalid path (controller missing): '.$map);
             return $this->get404Controller($request);
         }
 
