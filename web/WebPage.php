@@ -14,8 +14,12 @@ abstract class WebPage extends WebView {
         $this->scripts = array();
     }
 
+    public function getStaticPath($path) {  
+        return $this->getSite()->getConfig()->staticBaseUri().$path;
+    }
+
     public function addStylesheet($path) {
-        $fullPath = $this->getSite()->getConfig()->staticBaseUri().$path;
+        $fullPath = $this->getStaticPath($path);
         $this->stylesheets[$fullPath] = 1;
         return $this;
     }
@@ -26,7 +30,7 @@ abstract class WebPage extends WebView {
     }
 
     public function addScript($path) {
-        $fullPath = $this->getSite()->getConfig()->staticBaseUri().$path;
+        $fullPath = $this->getStaticPath($path);
         $this->scripts[$fullPath] = 1;
         return $this;
     }
