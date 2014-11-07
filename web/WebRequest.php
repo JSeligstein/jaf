@@ -13,7 +13,6 @@ class WebRequest {
         $r->get = new \jaf\web\RequestData($_GET);
         $r->post = new \jaf\web\RequestData($_POST);
 
-
         $protocol = strpos(strtolower($_SERVER['SERVER_PROTOCOL']), 'https') === false
                   ? 'http'
                   : 'https';

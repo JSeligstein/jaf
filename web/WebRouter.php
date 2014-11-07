@@ -34,6 +34,11 @@ abstract class WebRouter {
                     return $this->get404Controller($request);
                 }
                 $map = $map['*'];
+                
+                // if we have a * at this point, allow it to break
+                if (gettype($map) == 'string') {
+                    break;
+                }
             } else {
                 $map = $map[$piece];
             }

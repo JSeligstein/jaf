@@ -3,6 +3,7 @@
 namespace jaf\web;
 
 use jaf\web\WebRequest;
+use jaf\exception\FourOhFourException;
 use jaf\exception\SiteException;
 
 abstract class WebSite {
@@ -55,7 +56,12 @@ abstract class WebSite {
             throw new SiteException('Process was called twice.');
         }
 
-        $this->controller->process();
+        try {
+            $this->controller->process();
+        } catch (FourOhFourException $fofe) {
+            $this->controller = $this->router->get404Controller($this->request);
+            $this->controller->process();
+        }
         $this->processed = true;
     }
 
