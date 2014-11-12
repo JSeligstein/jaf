@@ -6,12 +6,14 @@ abstract class WebPage extends WebView {
 
     private $stylesheets;
     private $scripts;
+    private $footerScripts;
 
     abstract public function getTitle();
 
     public function __construct() {
         $this->stylesheets = array();
         $this->scripts = array();
+        $this->footerScripts = array();
     }
 
     public function getStaticPath($path) {  
@@ -40,6 +42,17 @@ abstract class WebPage extends WebView {
         return $this;
     }
 
+    public function addFooterScript($path) {
+        $fullPath = $this->getStaticPath($path);
+        $this->footerScripts[$fullPath] = 1;
+        return $this;
+    }
+
+    public function addExternalFooterScript($path) {
+        $this->footerScripts[$path] = 1;
+        return $this;
+    }
+
     private function getHead() {
         $head =
             <head>
@@ -64,6 +77,16 @@ abstract class WebPage extends WebView {
     public function headers() {
     }
 
+    private function getFooterScripts() {
+        $scripts = <x:frag />;
+        foreach ($this->footerScripts as $script => $_) {
+            $scripts->appendChild(
+                <script type="text/javascript" src={$script} />
+            );
+        }
+        return $scripts;
+    }
+
     public function render() {
         $content = $this->getContent()->__toString();
         $head = $this->getHead();
@@ -72,7 +95,10 @@ abstract class WebPage extends WebView {
             <x:doctype>
                 <html>
                     {$head}
-                    <body>{RawHTML($content)}</body>
+                    <body>
+                        {RawHTML($content)}
+                        {$this->getFooterScripts()}
+                    </body>
                 </html>
             </x:doctype>;
     }
