@@ -26,6 +26,7 @@ class Uri {
         if ($protocolLoc !== false) {
             if ($protocolLoc > 0) {
                 $this->protocol = substr($uri, 0, $protocolLoc);
+
             }
             $uri = substr($uri, $protocolLoc+3);
         }
@@ -36,9 +37,16 @@ class Uri {
             $this->fullDomain = $uri;
             $uri = '';
         } else {
+            if ($firstSlashLoc == 0) {
+                // find the default base Uri and start over
+                $baseUri = WebSite::instance()->getConfig()->baseUri();
+                return $this->parse($baseUri.substr($uri, 1));
+            }
+
             $this->fullDomain = substr($uri, 0, $firstSlashLoc);
             $uri = substr($uri, $firstSlashLoc+1);
         }
+
         $this->parseFullDomain();
 
         // is there a query string?
@@ -150,6 +158,11 @@ class Uri {
     }
 
     public function setPath($path) {
+        // make sure path doesn't start with a '/'
+        while ($path[0] == '/') {
+            $path = substr($path, 1);
+        }
+
         $this->path = $path;
         return $this;
     }
