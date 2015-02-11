@@ -159,8 +159,10 @@ class Uri {
 
     public function setPath($path) {
         // make sure path doesn't start with a '/'
-        while ($path[0] == '/') {
-            $path = substr($path, 1);
+        if (strlen($path) > 0) {
+            while ($path[0] == '/') {
+                $path = substr($path, 1);
+            }
         }
 
         $this->path = $path;
