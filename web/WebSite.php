@@ -61,6 +61,10 @@ abstract class WebSite {
         } catch (FourOhFourException $fofe) {
             $this->controller = $this->router->get404Controller($this->request);
             $this->controller->process();
+        } catch (\Exception $e) {
+            $this->controller = $this->router->getExceptionController($this->request);
+            $this->controller->exception = $e;
+            $this->controller->process();
         }
         $this->processed = true;
     }

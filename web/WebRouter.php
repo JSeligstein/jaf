@@ -5,6 +5,7 @@ namespace jaf\web;
 abstract class WebRouter {
     abstract public function getMap();
     abstract public function get404Controller(\jaf\web\WebRequest $request);
+    abstract public function getExceptionController(\jaf\web\WebRequest $request);
     
     public function getController(\jaf\web\WebRequest $request) {
         $get = $request->get;
