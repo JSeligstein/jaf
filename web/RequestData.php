@@ -71,6 +71,18 @@ class RequestData {
         return $this->getBool($name);
     }
 
+    public function getObject($name, $default='') {
+        if (isset($this->data[$name])) {
+            return (array)$this->data[$name];
+        }
+        return $default;
+    }
+
+    public function requireObject($name) {
+        $this->requireExists($name);
+        return $this->getObject($name);
+    }
+
     public function getExists($name) {
         return isset($this->data[$name]);
     }
