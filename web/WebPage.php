@@ -88,7 +88,9 @@ abstract class WebPage extends WebView {
     }
 
     public function render() {
-        $content = $this->getContent()->__toString();
+        // force render first
+        $content = $this->getContent();
+        $content->__toString();
         $head = $this->getHead();
 
         return
@@ -96,7 +98,7 @@ abstract class WebPage extends WebView {
                 <html>
                     {$head}
                     <body>
-                        {RawHTML($content)}
+                        {$content}
                         {$this->getFooterScripts()}
                     </body>
                 </html>

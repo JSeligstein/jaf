@@ -17,7 +17,7 @@ class WebRequest {
                   ? 'http'
                   : 'https';
         $host     = $_SERVER['HTTP_HOST'];   // Get  www.domain.com
-        $path     = $_GET['path'];
+        $path     = empty($_GET['path']) ? '' : $_GET['path'];
         $script   = $_SERVER['SCRIPT_NAME']; // Get folder/file.php
         $params   = $_SERVER['QUERY_STRING'];// Get Parameters occupation=odesk&name=ashik
 

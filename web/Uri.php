@@ -137,7 +137,7 @@ class Uri {
     }
 
     public function getParam($k) {
-        return $this->queryParams[$k];
+        return empty($this->queryParams[$k]) ? '' : $this->queryParams[$k];
     }
 
     public function getPathPiece($offset) {
