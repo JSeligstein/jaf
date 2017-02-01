@@ -28,7 +28,7 @@ class Generator {
 			   . '0123456789';
         $charLen = strlen($chars);
         $result = '';
-        while ($length > 0) {
+        while (strlen($result) < $length) {
             $result .= $chars[self::randSecure(0, $charLen-1)];
         }
         return $result;
