@@ -57,6 +57,7 @@ abstract class WebPage extends WebView {
         $head =
             <head>
                 <title>{$this->getTitle()}</title>
+                {$this->headers()}
             </head>;
 
         foreach ($this->stylesheets as $sheet => $_) {
