@@ -2,9 +2,19 @@
 
 namespace jaf\web;
 
-abstract class TextView extends WebView {
+class TextView extends WebView {
+    public $text = '';
+
+    public function __construct($text) {
+        $this->text = $text;
+    }
+        
     public function headers() {
         header('Content-type: text/plain');
+    }
+
+    public function getContent() {
+        return $this->text;
     }
 
     public function render() {
