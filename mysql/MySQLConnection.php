@@ -76,8 +76,8 @@ class MySQLConnection implements \PhutilQsprintfInterface {
         return mysql_insert_id($this->requireConnection());
     }
 
-    public function affectedRows($result) {
-        return mysql_affected_rows($result);
+    public function affectedRows() {
+        return mysql_affected_rows($this->requireConnection());
     }
 
     public function numRows($result) {
